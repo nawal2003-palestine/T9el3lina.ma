@@ -1,0 +1,302 @@
+CREATE DATABASE IF NOT EXISTS projet_transport;
+USE projet_transport;
+
+-- =========================
+-- TABLE: chauffeurs
+-- =========================
+CREATE TABLE chauffeurs (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nom VARCHAR(100) NOT NULL,
+    prenom VARCHAR(100) NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    telephone VARCHAR(20) NOT NULL,
+    telephone_secondaire VARCHAR(20) NULL,
+    password VARCHAR(255) NOT NULL,
+    permis VARCHAR(50) NOT NULL,
+    cin VARCHAR(20) NULL,
+    date_naissance DATE NULL,
+    adresse VARCHAR(255) NULL,
+    ville VARCHAR(100) NULL,
+    code_postal VARCHAR(10) NULL,
+    experience INT DEFAULT 0,
+    annees_experience INT(2) NULL,
+    specialites TEXT NULL,
+    langues VARCHAR(200) NULL,
+    zones_service TEXT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    last_login TIMESTAMP NULL,
+    statut_disponibilite ENUM('disponible','occupe','hors_ligne') DEFAULT 'disponible',
+    note_moyenne DECIMAL(2,1) DEFAULT 0.0,
+    total_missions INT DEFAULT 0,
+    gains_total DECIMAL(10,2) DEFAULT 0.00,
+    photo_profil VARCHAR(255) NULL,
+    photo_permis VARCHAR(255) NULL,
+    doc_cin VARCHAR(255) NULL,
+    doc_casier_judiciaire VARCHAR(255) NULL,
+    doc_certificat_medical VARCHAR(255) NULL,
+    doc_carte_professionnelle VARCHAR(255) NULL,
+    iban VARCHAR(50) NULL,
+    nom_banque VARCHAR(100) NULL,
+    titulaire_compte VARCHAR(200) NULL,
+    doc_rib VARCHAR(255) NULL,
+    notif_email TINYINT(1) DEFAULT 1,
+    notif_sms TINYINT(1) DEFAULT 1,
+    rayon_action INT(4) DEFAULT 50,
+    disponibilite_statut ENUM('disponible','occupe','pause') DEFAULT 'disponible',
+    numero_permis VARCHAR(50) NULL,
+    date_obtention_permis DATE NULL,
+    date_expiration_permis DATE NULL,
+    statut ENUM('en attente','vérifié','actif','suspendu','bloqué') DEFAULT 'en attente',
+    ville_principale VARCHAR(100) NULL,
+    INDEX idx_ville (ville),
+    INDEX idx_disponibilite (disponibilite_statut),
+    INDEX idx_statut (statut)
+);
+
+-- =========================
+-- TABLE: clients
+-- =========================
+CREATE TABLE clients (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nom VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    telephone VARCHAR(20) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- =========================
+-- TABLE: vehicules
+-- =========================
+CREATE TABLE vehicules (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    chauffeur_id INT NOT NULL,
+    type VARCHAR(50) NOT NULL,
+    marque VARCHAR(50) NOT NULL,
+    modele VARCHAR(50) NOT NULL,
+    annee INT(4) NULL,
+    capacite DECIMAL(10,2) NOT NULL,
+    immatriculation VARCHAR(20) NOT NULL,
+    pays_immatriculation VARCHAR(50) DEFAULT 'Maroc',
+    type_permis_requis VARCHAR(10) NULL,
+    categorie VARCHAR(50) NULL,
+    longueur DECIMAL(5,2) NULL,
+    largeur DECIMAL(4,2) NULL,
+    hauteur DECIMAL(4,2) NULL,
+    volume_utile DECIMAL(6,2) NULL,
+    charge_utile DECIMAL(5,2) NULL,
+    poids_total DECIMAL(5,2) NULL,
+    nombre_essieux INT(2) NULL,
+    nombre_palettes INT(3) NULL,
+    travail_par_trajet TINYINT(1) DEFAULT 0,
+    trajets_par_jour INT(3) NULL,
+    type_chargement TEXT NULL,
+    equipements TEXT NULL,
+    couleur VARCHAR(30) NULL,
+    carburant VARCHAR(20) NULL,
+    climatisation TINYINT(1) DEFAULT 0,
+    gps TINYINT(1) DEFAULT 0,
+    description TEXT NULL,
+    photos TEXT NULL,
+    doc_carte_grise VARCHAR(255) NULL,
+    doc_assurance VARCHAR(255) NULL,
+    doc_controle_technique VARCHAR(255) NULL,
+    doc_permis VARCHAR(255) NULL,
+    doc_autorisation_transport VARCHAR(255) NULL,
+    statut_verification ENUM('brouillon','en attente','vérifié','refusé') DEFAULT 'brouillon',
+    raison_refus TEXT NULL,
+    verifie_par INT NULL,
+    verifie_le TIMESTAMP NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    INDEX idx_pays_immatriculation (pays_immatriculation),
+    INDEX idx_statut_verification (statut_verification),
+    INDEX idx_categorie (categorie),
+    FOREIGN KEY (chauffeur_id) REFERENCES chauffeurs(id)
+);
+
+-- =========================
+-- TABLE: demandes
+-- =========================
+CREATE TABLE demandes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    client_id INT NOT NULL,
+    titre VARCHAR(100) NOT NULL,
+    description TEXT NULL,
+    estimation_distance INT NULL,
+    prix_propose DECIMAL(10,2) NULL,
+    poids_estime DECIMAL(10,2) NULL,
+    type_transport VARCHAR(50) DEFAULT 'standard',
+    type_marchandise VARCHAR(50) NOT NULL,
+    volume DECIMAL(10,2) NOT NULL,
+    poids DECIMAL(10,2) NULL,
+    nombre_colis INT DEFAULT 1,
+    additional_data TEXT NULL,
+    lieu_depart VARCHAR(100) NOT NULL,
+    lieu_arrivee VARCHAR(100) NOT NULL,
+    date_demande DATETIME NOT NULL,
+    statut VARCHAR(20) DEFAULT 'en attente',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    INDEX idx_poids (poids),
+    INDEX idx_nombre_colis (nombre_colis),
+    FOREIGN KEY (client_id) REFERENCES clients(id)
+);
+
+-- =========================
+-- TABLE: reservations
+-- =========================
+CREATE TABLE reservations (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    demande_id INT NOT NULL,
+    chauffeur_id INT NOT NULL,
+    vehicule_id INT NOT NULL,
+    montant DECIMAL(10,2) NULL,
+    commission_taux DECIMAL(5,2) DEFAULT 10.00,
+    commission_montant DECIMAL(10,2) NULL,
+    montant_net DECIMAL(10,2) NULL,
+    prix DECIMAL(10,2) NOT NULL,
+    statut VARCHAR(20) DEFAULT 'confirmé',
+    statut_paiement ENUM('en attente','traité','payé','annulé') DEFAULT 'en attente',
+    date_paiement TIMESTAMP NULL,
+    methode_paiement VARCHAR(50) NULL,
+    evaluation_faite TINYINT(1) DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    INDEX idx_statut_paiement (statut_paiement),
+    INDEX idx_date_paiement (date_paiement),
+    FOREIGN KEY (demande_id) REFERENCES demandes(id),
+    FOREIGN KEY (chauffeur_id) REFERENCES chauffeurs(id),
+    FOREIGN KEY (vehicule_id) REFERENCES vehicules(id)
+);
+
+-- =========================
+-- TABLE: conversations
+-- =========================
+CREATE TABLE conversations (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    chauffeur_id INT NOT NULL,
+    client_id INT NOT NULL,
+    demande_id INT NULL,
+    dernier_message TEXT NULL,
+    dernier_message_date TIMESTAMP NULL,
+    non_lus_chauffeur INT DEFAULT 0,
+    non_lus_client INT DEFAULT 0,
+    statut ENUM('active','archivée','bloquée') DEFAULT 'active',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    INDEX idx_chauffeur (chauffeur_id),
+    INDEX idx_client (client_id),
+    INDEX idx_statut (statut),
+    INDEX idx_updated (updated_at),
+    FOREIGN KEY (chauffeur_id) REFERENCES chauffeurs(id),
+    FOREIGN KEY (client_id) REFERENCES clients(id)
+);
+
+-- =========================
+-- TABLE: messages
+-- =========================
+CREATE TABLE messages (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    conversation_id INT NOT NULL,
+    expediteur_type ENUM('client','chauffeur','admin') NOT NULL,
+    expediteur_id INT NOT NULL,
+    message TEXT NOT NULL,
+    lu TINYINT(1) DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    INDEX idx_conversation (conversation_id),
+    INDEX idx_lu (lu),
+    FOREIGN KEY (conversation_id) REFERENCES conversations(id)
+);
+
+-- =========================
+-- TABLE: disponibilites
+-- =========================
+CREATE TABLE disponibilites (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    chauffeur_id INT NOT NULL,
+    vehicule_id INT NOT NULL,
+    statut ENUM('disponible','indisponible','en mission') DEFAULT 'disponible',
+    position_actuelle VARCHAR(255) NULL,
+    date_maj TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (chauffeur_id) REFERENCES chauffeurs(id),
+    FOREIGN KEY (vehicule_id) REFERENCES vehicules(id)
+);
+
+-- =========================
+-- TABLE: evaluations
+-- =========================
+CREATE TABLE evaluations (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    reservation_id INT NOT NULL,
+    chauffeur_id INT NOT NULL,
+    client_id INT NOT NULL,
+    note INT(1) NOT NULL,
+    commentaire TEXT NULL,
+    criteres LONGTEXT NULL,
+    reponse_chauffeur TEXT NULL,
+    reponse_date TIMESTAMP NULL,
+    statut ENUM('publique','masquée','signalée') DEFAULT 'publique',
+    date_evaluation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (reservation_id) REFERENCES reservations(id),
+    FOREIGN KEY (chauffeur_id) REFERENCES chauffeurs(id),
+    FOREIGN KEY (client_id) REFERENCES clients(id)
+);
+
+-- =========================
+-- TABLE: transactions_financieres
+-- =========================
+CREATE TABLE transactions_financieres (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    reservation_id INT NOT NULL,
+    chauffeur_id INT NOT NULL,
+    client_id INT NOT NULL,
+    montant_brut DECIMAL(10,2) NOT NULL,
+    commission_taux DECIMAL(5,2) DEFAULT 10.00,
+    commission_montant DECIMAL(10,2) NOT NULL,
+    montant_net DECIMAL(10,2) NOT NULL,
+    type_transaction ENUM('mission','bonus','penalite','remboursement') DEFAULT 'mission',
+    statut_paiement ENUM('en attente','traité','payé','annulé') DEFAULT 'en attente',
+    date_transaction TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    date_paiement TIMESTAMP NULL,
+    methode_paiement VARCHAR(50) NULL,
+    reference_paiement VARCHAR(100) NULL,
+    notes TEXT NULL,
+    FOREIGN KEY (reservation_id) REFERENCES reservations(id),
+    FOREIGN KEY (chauffeur_id) REFERENCES chauffeurs(id),
+    FOREIGN KEY (client_id) REFERENCES clients(id)
+);
+
+-- =========================
+-- TABLE: paiements_groupes
+-- =========================
+CREATE TABLE paiements_groupes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    chauffeur_id INT NOT NULL,
+    periode_debut DATE NOT NULL,
+    periode_fin DATE NOT NULL,
+    montant_total_brut DECIMAL(10,2) NOT NULL,
+    montant_total_commission DECIMAL(10,2) NOT NULL,
+    montant_total_net DECIMAL(10,2) NOT NULL,
+    nombre_transactions INT NOT NULL,
+    statut ENUM('en attente','approuvé','payé','annulé') DEFAULT 'en attente',
+    reference_paiement VARCHAR(100) NULL,
+    methode_paiement VARCHAR(50) NULL,
+    date_demande TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    date_approbation TIMESTAMP NULL,
+    date_paiement TIMESTAMP NULL,
+    approuve_par INT NULL,
+    notes TEXT NULL,
+    FOREIGN KEY (chauffeur_id) REFERENCES chauffeurs(id)
+);
+
+-- =========================
+-- TABLE: public_updates
+-- =========================
+CREATE TABLE public_updates (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    demande_id INT NOT NULL,
+    chauffeur_id INT NULL,
+    status ENUM('en_attente','en_cours','termine','annule') DEFAULT 'en_attente',
+    position_actuelle VARCHAR(255) NULL,
+    last_update TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (demande_id) REFERENCES demandes(id),
+    FOREIGN KEY (chauffeur_id) REFERENCES chauffeurs(id)
+);
