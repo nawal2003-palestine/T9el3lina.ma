@@ -1,0 +1,1852 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>T9el.ma - الشرح الكامل لطريقة العمل</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2C5D8C;
+            --secondary: #E67E22;
+            --success: #27AE60;
+            --danger: #E74C3C;
+            --warning: #F39C12;
+            --dark: #2C3E50;
+            --light: #ECF0F1;
+            --white: #FFFFFF;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: var(--dark);
+            direction: rtl;
+            text-align: right;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        .header {
+            background: var(--white);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            color: var(--primary);
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        .header .subtitle {
+            color: var(--secondary);
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        /* Navigation */
+        .nav-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .nav-tab {
+            background: var(--white);
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .nav-tab:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .nav-tab.active {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        /* Content Cards */
+        .content-section {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card {
+            background: var(--white);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .card h2 {
+            color: var(--primary);
+            margin-bottom: 20px;
+            font-size: 2rem;
+            border-bottom: 3px solid var(--secondary);
+            padding-bottom: 10px;
+        }
+
+        .card h3 {
+            color: var(--secondary);
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+
+        /* Flow Chart */
+        .flow-chart {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .flow-step {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: var(--white);
+            padding: 25px;
+            border-radius: 15px;
+            position: relative;
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .flow-step::after {
+            content: '↓';
+            position: absolute;
+            bottom: -30px;
+            right: 50%;
+            transform: translateX(50%);
+            font-size: 2rem;
+            color: var(--primary);
+        }
+
+        .flow-step:last-child::after {
+            display: none;
+        }
+
+        .step-number {
+            display: inline-block;
+            background: var(--white);
+            color: var(--primary);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 40px;
+            font-weight: bold;
+            margin-left: 15px;
+        }
+
+        /* Grid Layout */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .feature-box {
+            background: linear-gradient(135deg, var(--success) 0%, #229954 100%);
+            color: var(--white);
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .feature-box:hover {
+            transform: scale(1.05);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        /* Comparison Table */
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 15px;
+            text-align: right;
+            border-bottom: 2px solid var(--light);
+        }
+
+        .comparison-table th {
+            background: var(--primary);
+            color: var(--white);
+            font-weight: 600;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .check {
+            color: var(--success);
+            font-size: 1.5rem;
+        }
+
+        .cross {
+            color: var(--danger);
+            font-size: 1.5rem;
+        }
+
+        /* Alert Boxes */
+        .alert {
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-right: 5px solid;
+        }
+
+        .alert-info {
+            background: #d1ecf1;
+            border-color: #0c5460;
+            color: #0c5460;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            border-color: var(--success);
+            color: #155724;
+        }
+
+        .alert-warning {
+            background: #fff3cd;
+            border-color: var(--warning);
+            color: #856404;
+        }
+
+        .alert-danger {
+            background: #f8d7da;
+            border-color: var(--danger);
+            color: #721c24;
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding: 20px 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            right: 50%;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: var(--primary);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 40px;
+            width: 45%;
+        }
+
+        .timeline-item:nth-child(even) {
+            margin-right: auto;
+        }
+
+        .timeline-content {
+            background: var(--white);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .timeline-dot {
+            position: absolute;
+            top: 20px;
+            width: 20px;
+            height: 20px;
+            background: var(--secondary);
+            border-radius: 50%;
+            border: 4px solid var(--white);
+        }
+
+        .timeline-item:nth-child(odd) .timeline-dot {
+            left: -58px;
+        }
+
+        .timeline-item:nth-child(even) .timeline-dot {
+            right: -58px;
+        }
+
+        /* Stats Box */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .stat-box {
+            background: linear-gradient(135deg, var(--primary) 0%, #1e4a6f 100%);
+            color: var(--white);
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        /* Code Block */
+        .code-block {
+            background: #282c34;
+            color: #abb2bf;
+            padding: 20px;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            direction: ltr;
+            text-align: left;
+        }
+
+        /* Highlight Box */
+        .highlight {
+            background: #fff3cd;
+            border-right: 5px solid var(--warning);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        /* Process Steps */
+        .process-steps {
+            display: flex;
+            justify-content: space-between;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .process-step {
+            flex: 1;
+            min-width: 150px;
+            text-align: center;
+            padding: 20px;
+            position: relative;
+        }
+
+        .process-step::after {
+            content: '←';
+            position: absolute;
+            left: -20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2rem;
+            color: var(--primary);
+        }
+
+        .process-step:last-child::after {
+            display: none;
+        }
+
+        .process-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--primary);
+            color: var(--white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin: 0 auto 15px;
+        }
+
+        ul, ol {
+            margin-right: 30px;
+            margin-top: 10px;
+        }
+
+        li {
+            margin-bottom: 8px;
+            line-height: 1.6;
+        }
+
+        p {
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .nav-tab {
+                padding: 10px 15px;
+                font-size: 0.9rem;
+            }
+
+            .timeline::before {
+                right: 30px;
+            }
+
+            .timeline-item {
+                width: calc(100% - 60px);
+                margin-right: 60px !important;
+            }
+
+            .timeline-item:nth-child(odd) .timeline-dot,
+            .timeline-item:nth-child(even) .timeline-dot {
+                right: -58px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🚛 T9el.ma</h1>
+            <p class="subtitle">الدليل الكامل لطريقة عمل المنصة</p>
+        </div>
+
+        <!-- Navigation -->
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="showSection('vue-ensemble')">📊 نظرة عامة</button>
+            <button class="nav-tab" onclick="showSection('utilisateurs')">👥 أنواع المستخدمين</button>
+            <button class="nav-tab" onclick="showSection('parcours-client')">🛒 مسار العميل</button>
+            <button class="nav-tab" onclick="showSection('parcours-chauffeur')">🚛 مسار السائق</button>
+            <button class="nav-tab" onclick="showSection('encheres')">💰 نظام المزايدة</button>
+            <button class="nav-tab" onclick="showSection('protection')">🔒 حماية العمولة</button>
+            <button class="nav-tab" onclick="showSection('contrat')">📜 العقود الإلكترونية</button>
+            <button class="nav-tab" onclick="showSection('paiement')">💳 نظام الدفع</button>
+            <button class="nav-tab" onclick="showSection('optimisation')">🎯 تحسين الرحلات</button>
+            <button class="nav-tab" onclick="showSection('business')">📈 النموذج الاقتصادي</button>
+        </div>
+
+        <!-- Content Sections -->
+        
+        <!-- نظرة عامة -->
+        <div id="vue-ensemble" class="content-section active">
+            <div class="card">
+                <h2>📊 نظرة عامة على T9el.ma</h2>
+                
+                <div class="alert alert-info">
+                    <strong>🎯 المفهوم:</strong> T9el.ma هي منصة سوق للنقل تربط العملاء والسائقين عبر نظام مزايدات عكسية، مع دفع آمن وعقود إلكترونية B2B ومتابعة في الوقت الفعلي.
+                </div>
+
+                <h3>🎯 الأهداف الرئيسية</h3>
+                <div class="grid-2">
+                    <div class="feature-box">
+                        <div class="feature-icon">💰</div>
+                        <h4>أسعار شفافة</h4>
+                        <p>نظام مزايدات لأفضل سعر</p>
+                    </div>
+                    <div class="feature-box">
+                        <div class="feature-icon">🔒</div>
+                        <h4>دفع آمن</h4>
+                        <p>Escrow للحماية الكاملة</p>
+                    </div>
+                    <div class="feature-box">
+                        <div class="feature-icon">🚛</div>
+                        <h4>تحسين الرحلات</h4>
+                        <p>تقليل الشاحنات الفارغة</p>
+                    </div>
+                    <div class="feature-box">
+                        <div class="feature-icon">📜</div>
+                        <h4>حماية قانونية</h4>
+                        <p>عقود إلكترونية B2B</p>
+                    </div>
+                </div>
+
+                <h3>📈 أرقام مفتاحية</h3>
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <span class="stat-number">10%</span>
+                        <span class="stat-label">عمولة لكل معاملة</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-number">30-40%</span>
+                        <span class="stat-label">الشاحنات تسير فارغة (المشكلة المحلولة)</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-number">100%</span>
+                        <span class="stat-label">دفع آمن (escrow)</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-number">24/7</span>
+                        <span class="stat-label">المنصة متاحة</span>
+                    </div>
+                </div>
+
+                <h3>🔄 التدفق العام</h3>
+                <div class="flow-chart">
+                    <div class="flow-step">
+                        <span class="step-number">1</span>
+                        <strong>العميل ينشر طلب</strong> مع ميزانية تقريبية
+                    </div>
+                    <div class="flow-step">
+                        <span class="step-number">2</span>
+                        <strong>السائقون يتلقون إشعار</strong> ويقدمون عروضهم
+                    </div>
+                    <div class="flow-step">
+                        <span class="step-number">3</span>
+                        <strong>العميل يقارن العروض</strong> (السعر، التقييمات، المواعيد)
+                    </div>
+                    <div class="flow-step">
+                        <span class="step-number">4</span>
+                        <strong>العميل يقبل أفضل عرض</strong>
+                    </div>
+                    <div class="flow-step">
+                        <span class="step-number">5</span>
+                        <strong>الدفع يتم حجزه (escrow)</strong> + عقد إذا كان B2B
+                    </div>
+                    <div class="flow-step">
+                        <span class="step-number">6</span>
+                        <strong>تبادل معلومات الاتصال</strong> + تفعيل المحادثة
+                    </div>
+                    <div class="flow-step">
+                        <span class="step-number">7</span>
+                        <strong>تنفيذ المهمة</strong> مع تتبع GPS
+                    </div>
+                    <div class="flow-step">
+                        <span class="step-number">8</span>
+                        <strong>تأكيد التسليم (كود PIN)</strong>
+                    </div>
+                    <div class="flow-step">
+                        <span class="step-number">9</span>
+                        <strong>إطلاق الدفع تلقائياً</strong>
+                    </div>
+                    <div class="flow-step">
+                        <span class="step-number">10</span>
+                        <strong>التقييم</strong> من الطرفين
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- أنواع المستخدمين -->
+        <div id="utilisateurs" class="content-section">
+            <div class="card">
+                <h2>👥 أنواع المستخدمين</h2>
+                
+                <div class="alert alert-info">
+                    <strong>4 أنواع من المستخدمين:</strong> 2 من جانب الطلب (العملاء) و 2 من جانب العرض (السائقون)
+                </div>
+
+                <h3>🛒 جانب العميل (طالبو النقل)</h3>
+                
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>المعيار</th>
+                            <th>عميل فردي 👤</th>
+                            <th>شركة عميل 🏢</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>الملف الشخصي</strong></td>
+                            <td>فرد، شخص طبيعي</td>
+                            <td>شركة (وسيط، تجارة إلكترونية، إلخ)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>الحاجة</strong></td>
+                            <td>مؤقتة، عرضية</td>
+                            <td>منتظمة، مهنية</td>
+                        </tr>
+                        <tr>
+                            <td><strong>أمثلة</strong></td>
+                            <td>نقل، إرسال أثاث</td>
+                            <td>LogiMaroc، MarocShop، DéménagePlus</td>
+                        </tr>
+                        <tr>
+                            <td><strong>الوثائق</strong></td>
+                            <td>بطاقة الهوية فقط</td>
+                            <td>RC، Patente، ICE، RIB</td>
+                        </tr>
+                        <tr>
+                            <td><strong>التحقق</strong></td>
+                            <td>البريد الإلكتروني + الهاتف</td>
+                            <td>البريد + الهاتف + وثائق (مسؤول 24-48 ساعة)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>فاتورة TVA</strong></td>
+                            <td><span class="cross">✗</span></td>
+                            <td><span class="check">✓</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>عقد إلكتروني</strong></td>
+                            <td><span class="cross">✗</span> (تأكيد بسيط)</td>
+                            <td><span class="check">✓</span> (إذا كان السائق شركة)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>لوحة التحكم</strong></td>
+                            <td>أساسية</td>
+                            <td>متقدمة (إحصائيات، API مستقبلاً)</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>🚛 جانب السائق (مقدمو النقل)</h3>
+                
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>المعيار</th>
+                            <th>سائق فردي 👨‍💼</th>
+                            <th>شركة نقل 🏢🚛</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>الملف الشخصي</strong></td>
+                            <td>مالك مركبة واحدة</td>
+                            <td>أسطول من المركبات</td>
+                        </tr>
+                        <tr>
+                            <td><strong>أمثلة</strong></td>
+                            <td>كريم (شاحنة 3 أطنان)</td>
+                            <td>TransMaroc (5-50 شاحنة)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>الوثائق</strong></td>
+                            <td>بطاقة الهوية، رخصة القيادة، البطاقة الرمادية، التأمين</td>
+                            <td>RC، ترخيص النقل، بطاقات رمادية للأسطول</td>
+                        </tr>
+                        <tr>
+                            <td><strong>التحقق</strong></td>
+                            <td>مسؤول 24-48 ساعة</td>
+                            <td>مسؤول صارم 3-5 أيام</td>
+                        </tr>
+                        <tr>
+                            <td><strong>المركبات</strong></td>
+                            <td>واحدة فقط</td>
+                            <td>متعددة</td>
+                        </tr>
+                        <tr>
+                            <td><strong>مهام متزامنة</strong></td>
+                            <td>واحدة في كل مرة</td>
+                            <td>عدة في نفس الوقت</td>
+                        </tr>
+                        <tr>
+                            <td><strong>الموظفون</strong></td>
+                            <td>يعمل وحده</td>
+                            <td>عدة سائقين موظفين</td>
+                        </tr>
+                        <tr>
+                            <td><strong>لوحة التحكم</strong></td>
+                            <td>بسيطة</td>
+                            <td>إدارة الأسطول الكاملة</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="highlight">
+                    <strong>💡 للتذكر:</strong> التمييز بين الفردي/الشركة يسمح بتكييف تجربة المستخدم وتفعيل العقود الإلكترونية فقط للمعاملات B2B المهنية.
+                </div>
+            </div>
+        </div>
+
+        <!-- مسار العميل -->
+        <div id="parcours-client" class="content-section">
+            <div class="card">
+                <h2>🛒 المسار الكامل للعميل</h2>
+                
+                <h3>المرحلة 1: التسجيل والتحقق</h3>
+                <div class="process-steps">
+                    <div class="process-step">
+                        <div class="process-icon">📝</div>
+                        <strong>التسجيل</strong>
+                        <p>نموذج + وثائق</p>
+                    </div>
+                    <div class="process-step">
+                        <div class="process-icon">📧</div>
+                        <strong>البريد الإلكتروني</strong>
+                        <p>كود 6 أرقام</p>
+                    </div>
+                    <div class="process-step">
+                        <div class="process-icon">📱</div>
+                        <strong>الرسالة القصيرة</strong>
+                        <p>التحقق من الهاتف</p>
+                    </div>
+                    <div class="process-step">
+                        <div class="process-icon">✅</div>
+                        <strong>التفعيل</strong>
+                        <p>الحساب نشط</p>
+                    </div>
+                </div>
+
+                <h3>المرحلة 2: نشر الطلب</h3>
+                <div class="flow-chart">
+                    <div class="flow-step">
+                        <span class="step-number">1</span>
+                        العميل يملأ النموذج المفصل (المسار، التاريخ، البضائع، الميزانية)
+                    </div>
+                    <div class="flow-step">
+                        <span class="step-number">2</span>
+                        رفع الصور (اختياري) ووصف دقيق
+                    </div>
+                    <div class="flow-step">
+                        <span class="step-number">3</span>
+                        النظام يتحقق من رصيد المحفظة (الميزانية + 10% عمولة)
+                    </div>
+                    <div class="flow-step">
+                        <span class="step-number">4</span>
+                        المبلغ محجوز في escrow (أمان)
+                    </div>
+                    <div class="flow-step">
+                        <span class="step-number">5</span>
+                        الطلب منشور → إشعارات مرسلة للسائقين المناسبين
+                    </div>
+                </div>
+
+                <h3>المرحلة 3: استلام ومقارنة العروض</h3>
+                <div class="alert alert-success">
+                    <strong>✅ الحماية:</strong> لا يوجد اتصال مع السائقين قبل قبول العرض!
+                </div>
+                
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>العرض</th>
+                            <th>السعر</th>
+                            <th>التقييم</th>
+                            <th>المدة</th>
+                            <th>المسافة</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>العرض 1</strong> (سائق #4529)</td>
+                            <td><strong>1200 درهم</strong> 🏆</td>
+                            <td>⭐ 4.9/5</td>
+                            <td>4 ساعات</td>
+                            <td>5 كم</td>
+                        </tr>
+                        <tr>
+                            <td><strong>العرض 2</strong> (شركة #1847)</td>
+                            <td>1350 درهم</td>
+                            <td>⭐ 5.0/5 🏆</td>
+                            <td>3 ساعات</td>
+                            <td>15 كم</td>
+                        </tr>
+                        <tr>
+                            <td><strong>العرض 3</strong> (سائق #8921)</td>
+                            <td>1400 درهم</td>
+                            <td>⭐ 4.7/5</td>
+                            <td>ساعتان 🏆</td>
+                            <td>2 كم</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <p><strong>العميل يرى:</strong></p>
+                <ul style="list-style: none; padding-right: 0;">
+                    <li>✅ ملفات السائقين (التقييمات، الآراء، المركبة)</li>
+                    <li>✅ رسالة العرض</li>
+                    <li>❌ اسم السائق (مخفي)</li>
+                    <li>❌ الهاتف (مخفي)</li>
+                    <li>❌ البريد الإلكتروني (مخفي)</li>
+                    <li>❌ لا يوجد زر محادثة/رسالة</li>
+                </ul>
+
+                <h3>المرحلة 4: قبول العرض</h3>
+                <div class="flow-chart">
+                    <div class="flow-step">
+                        <span class="step-number">1</span>
+                        العميل ينقر "قبول العرض" (مثال: 1200 درهم)
+                    </div>
+                    <div class="flow-step">
+                        <span class="step-number">2</span>
+                        نافذة منبثقة للتأكيد مع ملخص مالي
+                    </div>
+                    <div class="flow-step">
+                        <span class="step-number">3</span>
+                        إذا شركة ← شركة: توليد عقد إلكتروني تلقائي
+                    </div>
+                    <div class="flow-step">
+                        <span class="step-number">4</span>
+                        توقيع إلكتروني (OTP SMS) من الطرفين
+                    </div>
+                    <div class="flow-step">
+                        <span class="step-number">5</span>
+                        🔓 فتح معلومات الاتصال + تفعيل المحادثة
+                    </div>
+                    <div class="flow-step">
+                        <span class="step-number">6</span>
+                        الدفع مفعّل (مهمة escrow نشطة)
+                    </div>
+                </div>
+
+                <h3>المرحلة 5: متابعة المهمة</h3>
+                <div class="grid-2">
+                    <div class="feature-box">
+                        <div class="feature-icon">📍</div>
+                        <h4>GPS في الوقت الفعلي</h4>
+                        <p>موقع السائق محدث</p>
+                    </div>
+                    <div class="feature-box">
+                        <div class="feature-icon">💬</div>
+                        <h4>محادثة مباشرة</h4>
+                        <p>تواصل فوري</p>
+                    </div>
+                    <div class="feature-box">
+                        <div class="feature-icon">🔔</div>
+                        <h4>الإشعارات</h4>
+                        <p>الانطلاق، نصف الطريق، الوصول</p>
+                    </div>
+                    <div class="feature-box">
+                        <div class="feature-icon">⏰</div>
+                        <h4>ETA ديناميكي</h4>
+                        <p>وقت الوصول المقدر</p>
+                    </div>
+                </div>
+
+                <h3>المرحلة 6: التسليم والدفع</h3>
+                <div class="flow-chart">
+                    <div class="flow-step">
+                        <span class="step-number">1</span>
+                        السائق يصل → يولد كود PIN (مثال: 9473)
+                    </div>
+                    <div class="flow-step">
+                        <span class="step-number">2</span>
+                        العميل يتلقى كود PIN عبر الرسالة القصيرة
+                    </div>
+                    <div class="flow-step">
+                        <span class="step-number">3</span>
+                        العميل يتحقق من البضائع ويدخل كود PIN
+                    </div>
+                    <div class="flow-step">
+                        <span class="step-number">4</span>
+                        التسليم مؤكد ✅
+                    </div>
+                    <div class="flow-step">
+                        <span class="step-number">5</span>
+                        الدفع التلقائي الفوري: العمولة ← المنصة | المبلغ ← السائق
+                    </div>
+                </div>
+
+                <h3>المرحلة 7: التقييم</h3>
+                <p>العميل يقيّم السائق على عدة معايير:</p>
+                <ul>
+                    <li>⭐ التقييم العام (1-5 نجوم)</li>
+                    <li>⏰ الالتزام بالمواعيد</li>
+                    <li>💬 التواصل</li>
+                    <li>📦 حالة البضائع</li>
+                    <li>👔 الاحترافية</li>
+                    <li>💬 تعليق (اختياري)</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- مسار السائق -->
+        <div id="parcours-chauffeur" class="content-section">
+            <div class="card">
+                <h2>🚛 المسار الكامل للسائق</h2>
+                
+                <h3>المرحلة 1: التسجيل والوثائق</h3>
+                <div class="alert alert-warning">
+                    <strong>⚠️ التحقق الصارم:</strong> يجب التحقق من جميع السائقين من قبل المسؤول (24-48 ساعة فردي، 3-5 أيام شركة)
+                </div>
+
+                <p><strong>الوثائق المطلوبة (فردي):</strong></p>
+                <ul>
+                    <li>📄 بطاقة الهوية الوطنية (الوجه والظهر)</li>
+                    <li>🚗 رخصة القيادة</li>
+                    <li>📋 البطاقة الرمادية للمركبة</li>
+                    <li>🛡️ تأمين نقل البضائع</li>
+                    <li>📸 صور المركبة (3 على الأقل)</li>
+                </ul>
+
+                <p><strong>الوثائق المطلوبة (شركة):</strong></p>
+                <ul>
+                    <li>🏢 السجل التجاري</li>
+                    <li>📋 الرخصة</li>
+                    <li>🆔 رقم التعريف الضريبي ICE</li>
+                    <li>✅ ترخيص نقل البضائع</li>
+                    <li>🚛 البطاقات الرمادية للأسطول</li>
+                    <li>🛡️ تأمينات الأسطول</li>
+                    <li>👥 قائمة السائقين الموظفين</li>
+                </ul>
+
+                <h3>المرحلة 2: عرض الطلبات المتاحة</h3>
+                <div class="flow-chart">
+                    <div class="flow-step">
+                        <span class="step-number">1</span>
+                        السائق يتلقى إشعار: "مهمة جديدة في منطقتك"
+                    </div>
+                    <div class="flow-step">
+                        <span class="step-number">2</span>
+                        ينقر لعرض تفاصيل الطلب
+                    </div>
+                    <div class="flow-step">
+                        <span class="step-number">3</span>
+                        يرى جميع معلومات المهمة (المسار، الوزن، الوصف، الصور)
+                    </div>
+                    <div class="flow-step">
+                        <span class="step-number">4</span>
+                        ❌ لا يرى معلومات الاتصال بالعميل (الاسم، الهاتف، البريد الإلكتروني مخفية)
+                    </div>
+                    <div class="flow-step">
+                        <span class="step-number">5</span>
+                        يرى العروض المنافسة (ليكون تنافسياً)
+                    </div>
+                </div>
+
+                <div class="alert alert-danger">
+                    <strong>🚫 لا يوجد اتصال ممكن قبل القبول!</strong><br>
+                    - لا يوجد زر محادثة<br>
+                    - لا يوجد زر رسالة<br>
+                    - معلومات الاتصال مخفية<br>
+                    ← الحماية ضد تجاوز المنصة
+                </div>
+
+                <h3>المرحلة 3: تقديم عرض</h3>
+                <div class="code-block">
+نموذج العرض:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+السعر المقترح: [1200] درهم
+المدة: [4] ساعات
+رسالة للعميل (اختياري):
+┌─────────────────────────────────┐
+│ يمكنني تولي نقلك اليوم.       │
+│ خبرة في المواد الهشة.          │
+│ المساعدة في التحميل متضمنة.   │
+└─────────────────────────────────┘
+
+⚠️ التحقق التلقائي:
+✅ لا يوجد رقم هاتف
+✅ لا يوجد بريد إلكتروني
+✅ لا توجد كلمات محظورة
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+                </div>
+
+                <p><strong>نظام مكافحة الاحتيال:</strong></p>
+                <ul>
+                    <li>🔍 الكشف التلقائي عن الأرقام (06 XX XX XX XX)</li>
+                    <li>🔍 الكشف عن البريد الإلكتروني (xxx@xxx.com)</li>
+                    <li>🔍 الكشف عن الكلمات المشبوهة (WhatsApp، اتصل، مباشر، خارج الموقع)</li>
+                    <li>❌ إذا تم الكشف ← العرض محظور + تحذير</li>
+                    <li>⚠️ 3 محاولات ← حظر دائم</li>
+                </ul>
+
+                <h3>المرحلة 4: العرض مقبول! 🎉</h3>
+                <div class="flow-chart">
+                    <div class="flow-step">
+                        <span class="step-number">1</span>
+                        العميل يقبل عرضك
+                    </div>
+                    <div class="flow-step">
+                        <span class="step-number">2</span>
+                        إشعار فوري: بريد إلكتروني + رسالة قصيرة + دفع
+                    </div>
+                    <div class="flow-step">
+                        <span class="step-number">3</span>
+                        🔓 فتح معلومات الاتصال بالعميل
+                    </div>
+                    <div class="flow-step">
+                        <span class="step-number">4</span>
+                        المحادثة مفعلة + أزرار الاتصال/البريد الإلكتروني متاحة
+                    </div>
+                    <div class="flow-step">
+                        <span class="step-number">5</span>
+                        العنوان الدقيق للتحميل مكشوف
+                    </div>
+                </div>
+
+                <div class="alert alert-success">
+                    <strong>✅ بعد القبول، السائق يرى:</strong><br>
+                    - الاسم الكامل للعميل<br>
+                    - هاتف العميل<br>
+                    - بريد العميل الإلكتروني<br>
+                    - العنوان الدقيق للتحميل<br>
+                    - زر المحادثة نشط<br>
+                    - زر الاتصال نشط
+                </div>
+
+                <h3>المرحلة 5: تنفيذ المهمة</h3>
+                <div class="process-steps">
+                    <div class="process-step">
+                        <div class="process-icon">📞</div>
+                        <strong>الاتصال</strong>
+                        <p>الاتصال بالعميل</p>
+                    </div>
+                    <div class="process-step">
+                        <div class="process-icon">📦</div>
+                        <strong>التحميل</strong>
+                        <p>تأكيد الانطلاق</p>
+                    </div>
+                    <div class="process-step">
+                        <div class="process-icon">🚛</div>
+                        <strong>النقل</strong>
+                        <p>GPS مفعل</p>
+                    </div>
+                    <div class="process-step">
+                        <div class="process-icon">📍</div>
+                        <strong>الوصول</strong>
+                        <p>توليد كود PIN</p>
+                    </div>
+                </div>
+
+                <h3>المرحلة 6: تأكيد التسليم</h3>
+                <div class="code-block">
+السائق يصل إلى الوجهة
+        ↓
+ينقر "لقد وصلت"
+        ↓
+النظام يولد كود PIN: 9473
+        ↓
+الكود مرسل للعميل عبر الرسالة القصيرة
+        ↓
+العميل يدخل الكود بعد التحقق
+        ↓
+✅ التسليم مؤكد
+        ↓
+💰 الدفع التلقائي الفوري
+        ↓
+1200 درهم ← محفظة السائق
+                </div>
+
+                <h3>المرحلة 7: استلام الدفع</h3>
+                <div class="stats-grid">
+                    <div class="stat-box" style="background: linear-gradient(135deg, var(--success) 0%, #229954 100%);">
+                        <span class="stat-number">1200 درهم</span>
+                        <span class="stat-label">مستلم فوراً</span>
+                    </div>
+                    <div class="stat-box" style="background: linear-gradient(135deg, var(--success) 0%, #229954 100%);">
+                        <span class="stat-number">0 درهم</span>
+                        <span class="stat-label">مخاطر عدم الدفع</span>
+                    </div>
+                    <div class="stat-box" style="background: linear-gradient(135deg, var(--success) 0%, #229954 100%);">
+                        <span class="stat-number">100%</span>
+                        <span class="stat-label">مضمون بواسطة escrow</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- نظام المزايدة -->
+        <div id="encheres" class="content-section">
+            <div class="card">
+                <h2>💰 نظام المزايدات (نموذج Indrive)</h2>
+                
+                <div class="alert alert-info">
+                    <strong>📌 المبدأ:</strong> العميل يقترح ميزانية، السائقون يقدمون عروضهم، العميل يختار الأفضل.
+                </div>
+
+                <h3>مزايا للعميل</h3>
+                <div class="grid-2">
+                    <div class="feature-box">
+                        <div class="feature-icon">💰</div>
+                        <h4>أفضل سعر</h4>
+                        <p>المنافسة بين السائقين</p>
+                    </div>
+                    <div class="feature-box">
+                        <div class="feature-icon">🔍</div>
+                        <h4>الشفافية</h4>
+                        <p>مقارنة جميع العروض</p>
+                    </div>
+                    <div class="feature-box">
+                        <div class="feature-icon">⚖️</div>
+                        <h4>اختيار واعي</h4>
+                        <p>السعر + التقييم + المدة</p>
+                    </div>
+                    <div class="feature-box">
+                        <div class="feature-icon">🛡️</div>
+                        <h4>لا مضايقات</h4>
+                        <p>لا يوجد اتصال قبل الاختيار</p>
+                    </div>
+                </div>
+
+                <h3>مزايا للسائق</h3>
+                <div class="grid-2">
+                    <div class="feature-box">
+                        <div class="feature-icon">👁️</div>
+                        <h4>الرؤية</h4>
+                        <p>رؤية الطلب الحقيقي</p>
+                    </div>
+                    <div class="feature-box">
+                        <div class="feature-icon">💪</div>
+                        <h4>تنافسي</h4>
+                        <p>اقتراح أفضل سعر</p>
+                    </div>
+                    <div class="feature-box">
+                        <div class="feature-icon">✅</div>
+                        <h4>التأكيد</h4>
+                        <p>المهمة مضمونة إذا تم قبولها</p>
+                    </div>
+                    <div class="feature-box">
+                        <div class="feature-icon">💰</div>
+                        <h4>دفع آمن</h4>
+                        <p>Escrow = 0% مخاطر</p>
+                    </div>
+                </div>
+
+                <h3>مثال محدد</h3>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <strong>10:00</strong> - العميل ينشر: "الدار البيضاء ← مراكش، 500 كجم، ميزانية 1500 درهم"
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <strong>10:15</strong> - السائق أ يقترح: 1200 درهم، 4 ساعات
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <strong>10:30</strong> - السائق ب يقترح: 1350 درهم، 3 ساعات
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <strong>10:45</strong> - السائق ج يقترح: 1400 درهم، ساعتان
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <strong>11:30</strong> - العميل يقارن ويختار السائق أ (أفضل نسبة جودة/سعر)
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <strong>11:31</strong> - المهمة مؤكدة! تبادل معلومات الاتصال تلقائياً
+                        </div>
+                    </div>
+                </div>
+
+                <h3>عوامل قرار العميل</h3>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>المعيار</th>
+                            <th>الوزن</th>
+                            <th>التأثير</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>💰 السعر</strong></td>
+                            <td>40%</td>
+                            <td>العامل الرئيسي</td>
+                        </tr>
+                        <tr>
+                            <td><strong>⭐ التقييم</strong></td>
+                            <td>30%</td>
+                            <td>الثقة</td>
+                        </tr>
+                        <tr>
+                            <td><strong>⏱️ المدة</strong></td>
+                            <td>20%</td>
+                            <td>الاستعجال</td>
+                        </tr>
+                        <tr>
+                            <td><strong>📍 المسافة</strong></td>
+                            <td>10%</td>
+                            <td>العملية</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- حماية العمولة -->
+        <div id="protection" class="content-section">
+            <div class="card">
+                <h2>🔒 حماية العمولة (مكافحة التجاوز)</h2>
+                
+                <div class="alert alert-danger">
+                    <strong>⚠️ مشكلة كبرى في الأسواق الإلكترونية:</strong><br>
+                    المستخدمون يتصلون خارج المنصة ← صفقة مباشرة ← فقدان العمولة 100%
+                </div>
+
+                <h3>❌ السيناريو بدون حماية</h3>
+                <div class="code-block" style="background: #ffe6e6; color: #721c24;">
+العميل ينشر الطلب
+    ↓
+السائق يرى ويرسل رسالة:
+"مرحباً، اتصل بي على 06 12 34 56 78"
+    ↓
+العميل يتصل مباشرة
+    ↓
+يتفاوضون خارج المنصة
+    ↓
+صفقة مباشرة = 1200 درهم (نقداً)
+    ↓
+❌ T9el.ma تخسر 120 درهم عمولة
+❌ لا حماية للدفع
+❌ لا إمكانية تتبع
+❌ خطر الاحتيال
+                </div>
+
+                <h3>✅ حل T9el.ma (نموذج Indrive)</h3>
+                <div class="code-block" style="background: #d4edda; color: #155724;">
+العميل ينشر الطلب
+    ↓
+السائق يرى (معلومات الاتصال مخفية)
+    ↓
+السائق يقدم عرض: 1200 درهم
+(❌ مستحيل الاتصال)
+    ↓
+العميل يقبل العرض
+    ↓
+✅ الدفع 1320 درهم محجوز escrow
+✅ معلومات الاتصال مكشوفة
+✅ المحادثة مفعلة
+    ↓
+المهمة منفذة عبر المنصة
+    ↓
+✅ T9el.ma تستلم 120 درهم عمولة
+✅ دفع آمن
+✅ إمكانية تتبع كاملة
+                </div>
+
+                <h3>تدابير الحماية</h3>
+                <div class="grid-2">
+                    <div class="feature-box" style="background: linear-gradient(135deg, #E74C3C 0%, #C0392B 100%);">
+                        <div class="feature-icon">🔒</div>
+                        <h4>إخفاء كامل</h4>
+                        <p>الاسم، الهاتف، البريد الإلكتروني مخفية قبل القبول</p>
+                    </div>
+                    <div class="feature-box" style="background: linear-gradient(135deg, #E74C3C 0%, #C0392B 100%);">
+                        <div class="feature-icon">🚫</div>
+                        <h4>لا محادثة</h4>
+                        <p>لا يوجد تواصل ممكن قبل</p>
+                    </div>
+                    <div class="feature-box" style="background: linear-gradient(135deg, #E74C3C 0%, #C0392B 100%);">
+                        <div class="feature-icon">🔍</div>
+                        <h4>كشف تلقائي</h4>
+                        <p>الأرقام/البريد الإلكتروني في الرسائل محظورة</p>
+                    </div>
+                    <div class="feature-box" style="background: linear-gradient(135deg, #E74C3C 0%, #C0392B 100%);">
+                        <div class="feature-icon">⚖️</div>
+                        <h4>عقوبات</h4>
+                        <p>تحذير ← إيقاف ← حظر</p>
+                    </div>
+                </div>
+
+                <h3>نظام الكشف التلقائي</h3>
+                <div class="code-block">
+// التحقق من رسالة العرض
+function validerMessage(message) {
+    
+    // 1. كشف أرقام الهاتف
+    if (message.match(/\b0[567]\d{8}\b/)) {
+        return "❌ محظور: رقم هاتف مكتشف";
+    }
+    
+    // 2. كشف البريد الإلكتروني
+    if (message.match(/[\w\-\.]+@[\w\-\.]+\.\w+/)) {
+        return "❌ محظور: بريد إلكتروني مكتشف";
+    }
+    
+    // 3. كشف الكلمات المحظورة
+    const interdits = [
+        'اتصل', 'whatsapp', 'مباشر', 
+        'خارج الموقع', 'بدون عمولة',
+        'telegram', 'messenger'
+    ];
+    
+    for (mot of interdits) {
+        if (message.toLowerCase().includes(mot)) {
+            return "❌ محظور: محتوى مشبوه";
+        }
+    }
+    
+    return "✅ رسالة صالحة";
+}
+                </div>
+
+                <h3>العقوبات التدريجية</h3>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>المحاولة</th>
+                            <th>العقوبة</th>
+                            <th>المدة</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>المرة الأولى</strong></td>
+                            <td>⚠️ تحذير + العرض محظور</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td><strong>المرة الثانية</strong></td>
+                            <td>🚫 إيقاف الحساب</td>
+                            <td>7 أيام</td>
+                        </tr>
+                        <tr>
+                            <td><strong>المرة الثالثة</strong></td>
+                            <td>❌ حظر نهائي</td>
+                            <td>دائم</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="highlight">
+                    <strong>💡 النتيجة:</strong> معدل التجاوز < 1% (مقابل 30-50% بدون حماية)
+                </div>
+            </div>
+        </div>
+
+        <!-- العقود الإلكترونية B2B -->
+        <div id="contrat" class="content-section">
+            <div class="card">
+                <h2>📜 العقود الإلكترونية B2B</h2>
+                
+                <div class="alert alert-info">
+                    <strong>🎯 الهدف:</strong> إضفاء الطابع الرسمي على العلاقات المهنية بين الشركات من خلال التوقيع الإلكتروني قبل تنفيذ المهمة.
+                </div>
+
+                <h3>متى يتم تفعيل العقد؟</h3>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>العميل</th>
+                            <th>السائق</th>
+                            <th>العقد؟</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>فردي</td>
+                            <td>فردي</td>
+                            <td><span class="cross">✗</span> لا (تأكيد بسيط)</td>
+                        </tr>
+                        <tr>
+                            <td>فردي</td>
+                            <td>شركة</td>
+                            <td>⚠️ اختياري</td>
+                        </tr>
+                        <tr>
+                            <td>شركة</td>
+                            <td>فردي</td>
+                            <td>⚠️ اختياري</td>
+                        </tr>
+                        <tr style="background: #d4edda;">
+                            <td><strong>شركة</strong></td>
+                            <td><strong>شركة</strong></td>
+                            <td><strong><span class="check">✓</span> نعم إلزامي</strong> 🔥</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>تدفق العقد الإلكتروني</h3>
+                <div class="flow-chart">
+                    <div class="flow-step">
+                        <span class="step-number">1</span>
+                        العميل (شركة) يقبل عرض السائق (شركة)
+                    </div>
+                    <div class="flow-step">
+                        <span class="step-number">2</span>
+                        النظام يكتشف: شركة ← شركة
+                    </div>
+                    <div class="flow-step">
+                        <span class="step-number">3</span>
+                        توليد تلقائي لعقد PDF (8 صفحات)
+                    </div>
+                    <div class="flow-step">
+                        <span class="step-number">4</span>
+                        إشعار العميل: "يرجى التوقيع على العقد"
+                    </div>
+                    <div class="flow-step">
+                        <span class="step-number">5</span>
+                        العميل يعرض PDF وينقر "التوقيع"
+                    </div>
+                    <div class="flow-step">
+                        <span class="step-number">6</span>
+                        رسالة قصيرة مع كود OTP 6 أرقام (مثال: 847293)
+                    </div>
+                    <div class="flow-step">
+                        <span class="step-number">7</span>
+                        العميل يدخل الكود ← ✅ توقيع العميل موثق
+                    </div>
+                    <div class="flow-step">
+                        <span class="step-number">8</span>
+                        إشعار السائق: "العميل وقع. دورك الآن"
+                    </div>
+                    <div class="flow-step">
+                        <span class="step-number">9</span>
+                        السائق يعرض نفس PDF وينقر "التوقيع"
+                    </div>
+                    <div class="flow-step">
+                        <span class="step-number">10</span>
+                        رسالة كود OTP (مثال: 539184) ← يدخل الكود ← ✅ توقيع السائق موثق
+                    </div>
+                    <div class="flow-step">
+                        <span class="step-number">11</span>
+                        🎉 العقد نشط! يمكن بدء المهمة
+                    </div>
+                </div>
+
+                <h3>مزايا العقد الإلكتروني</h3>
+                <div class="grid-2">
+                    <div class="feature-box">
+                        <div class="feature-icon">⚖️</div>
+                        <h4>قانوني</h4>
+                        <p>دليل قانوني في حالة النزاع</p>
+                    </div>
+                    <div class="feature-box">
+                        <div class="feature-icon">🛡️</div>
+                        <h4>الحماية</h4>
+                        <p>شروط واضحة مكتوبة</p>
+                    </div>
+                    <div class="feature-box">
+                        <div class="feature-icon">💼</div>
+                        <h4>احترافي</h4>
+                        <p>مصداقية B2B</p>
+                    </div>
+                    <div class="feature-box">
+                        <div class="feature-icon">📋</div>
+                        <h4>إمكانية التتبع</h4>
+                        <p>أرشفة قانونية لمدة 7 سنوات</p>
+                    </div>
+                </div>
+
+                <div class="alert alert-success">
+                    <strong>✅ الشرعية في المغرب:</strong> التوقيع OTP SMS صالح وفقاً للقانون 53-05 المتعلق بالتبادل الإلكتروني للبيانات القانونية
+                </div>
+            </div>
+        </div>
+
+        <!-- نظام الدفع -->
+        <div id="paiement" class="content-section">
+            <div class="card">
+                <h2>💳 نظام الدفع (Escrow)</h2>
+                
+                <div class="alert alert-info">
+                    <strong>🎯 مبدأ Escrow:</strong> يتم حجز المال على المنصة حتى تأكيد التسليم. أقصى أمان للطرفين.
+                </div>
+
+                <h3>التدفق المالي الكامل</h3>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <strong>الخطوة 1: نشر الطلب</strong><br>
+                            العميل: 5000 درهم ← 3350 درهم (-1650 درهم محجوز)<br>
+                            Escrow: 0 ← 1650 درهم (محجوز)
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <strong>الخطوة 2: قبول عرض 1200 درهم</strong><br>
+                            استرجاع الفرق: 1650 - 1320 = 330 درهم<br>
+                            العميل: 3350 + 330 = 3680 درهم<br>
+                            Escrow المهمة: 1320 درهم (محجوز)
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <strong>الخطوة 3: المهمة جارية</strong><br>
+                            العميل: 3680 درهم<br>
+                            Escrow: 1320 درهم (محجوز حتى التسليم)<br>
+                            السائق: 2000 درهم (انتظار)
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <strong>الخطوة 4: التسليم مؤكد (كود PIN)</strong><br>
+                            الدفع التلقائي الفوري:<br>
+                            - العمولة: 120 درهم ← المنصة<br>
+                            - السائق: 1200 درهم ← محفظة السائق
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <strong>النتيجة النهائية</strong><br>
+                            العميل: 3680 درهم<br>
+                            المنصة: +120 درهم<br>
+                            السائق: 2000 + 1200 = 3200 درهم
+                        </div>
+                    </div>
+                </div>
+
+                <h3>توزيع معاملة 1000 درهم</h3>
+                <div class="stats-grid">
+                    <div class="stat-box" style="background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);">
+                        <span class="stat-number">1100 درهم</span>
+                        <span class="stat-label">العميل يدفع (السعر + 10%)</span>
+                    </div>
+                    <div class="stat-box" style="background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);">
+                        <span class="stat-number">100 درهم</span>
+                        <span class="stat-label">عمولة T9el.ma (10%)</span>
+                    </div>
+                    <div class="stat-box" style="background: linear-gradient(135deg, #27ae60 0%, #229954 100%);">
+                        <span class="stat-number">1000 درهم</span>
+                        <span class="stat-label">السائق يتلقى (100%)</span>
+                    </div>
+                </div>
+
+                <h3>أمان النظام</h3>
+                <div class="grid-2">
+                    <div class="feature-box">
+                        <div class="feature-icon">👤</div>
+                        <h4>للعميل</h4>
+                        <p>✅ المال محمي<br>✅ استرجاع في حالة مشكلة<br>✅ كود PIN مطلوب</p>
+                    </div>
+                    <div class="feature-box">
+                        <div class="feature-icon">🚛</div>
+                        <h4>للسائق</h4>
+                        <p>✅ الدفع مضمون<br>✅ لا خطر عدم الدفع<br>✅ فوري</p>
+                    </div>
+                    <div class="feature-box">
+                        <div class="feature-icon">🏢</div>
+                        <h4>للمنصة</h4>
+                        <p>✅ العمولة تلقائية<br>✅ لا تلاعب<br>✅ قابل للتتبع</p>
+                    </div>
+                    <div class="feature-box">
+                        <div class="feature-icon">⚖️</div>
+                        <h4>في حالة نزاع</h4>
+                        <p>🔒 المال يبقى محجوز<br>👨‍⚖️ تدخل المسؤول<br>⏱️ قرار خلال 72 ساعة كحد أقصى</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- تحسين الرحلات -->
+        <div id="optimisation" class="content-section">
+            <div class="card">
+                <h2>🎯 تحسين الرحلات الفارغة</h2>
+                
+                <div class="alert alert-danger">
+                    <strong>📉 مشكلة كبرى:</strong> 30-40% من الشاحنات تسير فارغة في المغرب<br>
+                    ← خسائر كبيرة للسائقين<br>
+                    ← تلوث غير ضروري<br>
+                    ← عدم كفاءة اقتصادية
+                </div>
+
+                <h3>مثال محدد</h3>
+                <div class="code-block" style="background: #ffe6e6; color: #721c24;">
+❌ قبل T9el.ma:
+
+السائق يسلم:
+مراكش ← الدار البيضاء (240 كم)
+    ↓
+الدفع: 1200 درهم ✅
+    ↓
+العودة فارغة:
+الدار البيضاء ← مراكش (240 كم)
+    ↓
+تكلفة الوقود: -800 درهم ❌
+ضياع الوقت: 4 ساعات ❌
+    ↓
+الميزانية: 1200 - 800 = 400 درهم صافي
+           (33% خسارة!)
+                </div>
+
+                <div class="code-block" style="background: #d4edda; color: #155724;">
+✅ مع T9el.ma:
+
+السائق يسلم:
+مراكش ← الدار البيضاء (240 كم)
+الدفع: 1200 درهم ✅
+    ↓
+🔔 إشعار T9el.ma:
+"طلب متوافق مع عودتك!
+الدار البيضاء ← مراكش
+ميزانية: 1500 درهم"
+    ↓
+السائق يقدم عرض: 1000 درهم
+العميل يقبل ✅
+    ↓
+العودة ممتلئة:
+الدار البيضاء ← مراكش (240 كم)
+الدفع: 1000 درهم ✅
+    ↓
+الميزانية: 1200 + 1000 = 2200 درهم صافي
+           (+83% أرباح!)
+                </div>
+
+                <h3>الأثر الاقتصادي</h3>
+                <div class="stats-grid">
+                    <div class="stat-box" style="background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);">
+                        <span class="stat-number">30-40%</span>
+                        <span class="stat-label">رحلات فارغة قبل</span>
+                    </div>
+                    <div class="stat-box" style="background: linear-gradient(135deg, #27ae60 0%, #229954 100%);">
+                        <span class="stat-number">5-10%</span>
+                        <span class="stat-label">رحلات فارغة مع T9el.ma</span>
+                    </div>
+                    <div class="stat-box" style="background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);">
+                        <span class="stat-number">+75%</span>
+                        <span class="stat-label">أرباح السائقين</span>
+                    </div>
+                    <div class="stat-box" style="background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);">
+                        <span class="stat-number">-30%</span>
+                        <span class="stat-label">انبعاثات CO2</span>
+                    </div>
+                </div>
+
+                <div class="highlight">
+                    <strong>💡 النتيجة:</strong> السائقون يزيدون أرباحهم بنسبة 50-100% من خلال تحسين العودة. العملاء يستفيدون من أسعار أقل (السائق موجود بالفعل).
+                </div>
+            </div>
+        </div>
+
+        <!-- النموذج الاقتصادي -->
+        <div id="business" class="content-section">
+            <div class="card">
+                <h2>📈 النموذج الاقتصادي والتوقعات</h2>
+                
+                <h3>الإيرادات الرئيسية</h3>
+                <div class="grid-2">
+                    <div class="feature-box">
+                        <div class="feature-icon">💰</div>
+                        <h4>عمولة 10%</h4>
+                        <p>على كل معاملة</p>
+                    </div>
+                    <div class="feature-box">
+                        <div class="feature-icon">📅</div>
+                        <h4>الاشتراكات</h4>
+                        <p>Premium (مستقبلاً)</p>
+                    </div>
+                    <div class="feature-box">
+                        <div class="feature-icon">📢</div>
+                        <h4>الإعلانات</h4>
+                        <p>الشركاء (مستقبلاً)</p>
+                    </div>
+                    <div class="feature-box">
+                        <div class="feature-icon">🔌</div>
+                        <h4>API B2B</h4>
+                        <p>الشركات (مستقبلاً)</p>
+                    </div>
+                </div>
+
+                <h3>توقعات الإيرادات</h3>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>الفترة</th>
+                            <th>المهام/شهرياً</th>
+                            <th>متوسط الإيرادات</th>
+                            <th>عمولة 10%</th>
+                            <th>الإيرادات الشهرية</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>الشهر 1-3</strong></td>
+                            <td>50</td>
+                            <td>1500 درهم</td>
+                            <td>150 درهم</td>
+                            <td><strong>7,500 درهم</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>الشهر 4-6</strong></td>
+                            <td>200</td>
+                            <td>1500 درهم</td>
+                            <td>150 درهم</td>
+                            <td><strong>30,000 درهم</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>الشهر 7-12</strong></td>
+                            <td>500</td>
+                            <td>1500 درهم</td>
+                            <td>150 درهم</td>
+                            <td><strong>75,000 درهم</strong></td>
+                        </tr>
+                        <tr style="background: #d4edda;">
+                            <td><strong>السنة 2</strong></td>
+                            <td>1000</td>
+                            <td>1500 درهم</td>
+                            <td>150 درهم</td>
+                            <td><strong>150,000 درهم</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>الاستثمار الأولي</h3>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>البند</th>
+                            <th>المبلغ</th>
+                            <th>التفاصيل</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>التطوير</td>
+                            <td>0 درهم</td>
+                            <td>فريق داخلي</td>
+                        </tr>
+                        <tr>
+                            <td>الاستضافة (سنة واحدة)</td>
+                            <td>1,200 درهم</td>
+                            <td>100 درهم/شهر</td>
+                        </tr>
+                        <tr>
+                            <td>القانوني (SARL)</td>
+                            <td>5,000 درهم</td>
+                            <td>تأسيس الشركة</td>
+                        </tr>
+                        <tr>
+                            <td>التسويق للإطلاق</td>
+                            <td>10,000 درهم</td>
+                            <td>حملات مستهدفة</td>
+                        </tr>
+                        <tr>
+                            <td>متنوعة</td>
+                            <td>3,800 درهم</td>
+                            <td>غير متوقع</td>
+                        </tr>
+                        <tr style="background: #fff3cd;">
+                            <td><strong>المجموع</strong></td>
+                            <td><strong>20,000 درهم</strong></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>الربحية</h3>
+                <div class="code-block" style="background: #d4edda; color: #155724;">
+نقطة التعادل (عتبة الربحية):
+20,000 درهم / 150 درهم لكل مهمة = 134 مهمة
+بمعدل 50 مهمة/شهر = 3 أشهر ✅
+
+ROI (العائد على الاستثمار):
+الشهر 4: أول ربحية
+الشهر 12: ROI × 4 (80,000 درهم صافي)
+السنة 2: ROI × 20+ (400,000 درهم صافي)
+                </div>
+
+                <h3>المزايا التنافسية</h3>
+                <div class="grid-2">
+                    <div class="feature-box">
+                        <div class="feature-icon">🥇</div>
+                        <h4>الأول في السوق</h4>
+                        <p>أول سوق إلكتروني في المغرب</p>
+                    </div>
+                    <div class="feature-box">
+                        <div class="feature-icon">💰</div>
+                        <h4>أسعار شفافة</h4>
+                        <p>نظام مزايدات فريد</p>
+                    </div>
+                    <div class="feature-box">
+                        <div class="feature-icon">🔒</div>
+                        <h4>أقصى أمان</h4>
+                        <p>Escrow + عقود B2B</p>
+                    </div>
+                    <div class="feature-box">
+                        <div class="feature-icon">🎯</div>
+                        <h4>التحسين</h4>
+                        <p>تقليل الرحلات الفارغة</p>
+                    </div>
+                </div>
+
+                <div class="alert alert-success">
+                    <strong>🎯 هدف السنة 2:</strong> الرائد في سوق النقل الإلكتروني في المغرب مع 5000 مستخدم و 150,000 درهم إيرادات شهرية
+                </div>
+            </div>
+        </div>
+
+        <!-- الخاتمة -->
+        <div class="card" style="text-align: center; margin-top: 40px;">
+            <h2>🚀 هل أنت مستعد لإطلاق T9el.ma؟</h2>
+            <p style="font-size: 1.2rem; margin: 20px 0;">
+                منصة كاملة، نموذج مجرّب، إمكانات هائلة!
+            </p>
+            <div class="stats-grid" style="margin: 30px 0;">
+                <div class="stat-box" style="background: linear-gradient(135deg, #27ae60 0%, #229954 100%);">
+                    <span class="stat-number">✅</span>
+                    <span class="stat-label">100% آمن</span>
+                </div>
+                <div class="stat-box" style="background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);">
+                    <span class="stat-number">🚀</span>
+                    <span class="stat-label">MVP في 8 أسابيع</span>
+                </div>
+                <div class="stat-box" style="background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);">
+                    <span class="stat-number">💰</span>
+                    <span class="stat-label">مربح من الشهر 4</span>
+                </div>
+            </div>
+            <p style="color: #7f8c8d; margin-top: 30px;">
+                وثيقة أنشئت للعرض على مالك المشروع | © 2024 T9el.ma
+            </p>
+        </div>
+        
+    </div>
+
+    <script>
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+
+            const tabs = document.querySelectorAll('.nav-tab');
+            tabs.forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            document.getElementById(sectionId).classList.add('active');
+            event.target.classList.add('active');
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
